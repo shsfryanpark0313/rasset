@@ -49,10 +49,8 @@ export const qrService = {
     verifyToken: async (token: string) => {
         const { data, error } = await supabase
             .from('qr_tokens')
-            .select(`
-                *,
-                feedback:tablet_feedback_id (*)
-            `)
+            .from('qr_tokens')
+            .select('*')
             .eq('token', token)
             .single();
 
@@ -72,8 +70,8 @@ export const qrService = {
 
         return {
             isValid: true,
-            hasTabletResponse: !!data.feedback,
-            tabletResponses: data.feedback ? data.feedback.tablet_responses : null
+            hasTabletResponse: false,
+            tabletResponses: null
         };
     }
 };
