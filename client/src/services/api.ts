@@ -8,7 +8,7 @@ export const qrService = {
      * Generate a transparent/Linked QR token directly in Supabase.
      * No backend server involved.
      */
-    generateToken: async (tabletFeedbackId?: string) => {
+    generateToken: async (_tabletFeedbackId?: string) => {
         // 1. Create a random UUID-like token
         // Supabase `gen_random_uuid()` is best, but we need the token string here too.
 

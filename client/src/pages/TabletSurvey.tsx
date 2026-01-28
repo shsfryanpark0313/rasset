@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import Button from '../components/Button';
 import { qrService, surveyService } from '../services/api';
-import { Check, ThumbsUp, Smile, Meh, Frown, Smartphone, ArrowRight, Gift, Command } from 'lucide-react';
+import { Check, Smartphone, ArrowRight, Gift, Command } from 'lucide-react';
 
 const TabletSurvey: React.FC = () => {
     const [tokenData, setTokenData] = useState<{ token: string; url: string; expiresAt: string } | null>(null);
-    const [qrGenerated, setQrGenerated] = useState<boolean>(false);
+    // const [qrGenerated, setQrGenerated] = useState<boolean>(false); // Unused
     const [answers, setAnswers] = useState<{
         q1_experience: string | null;
         q2_experience_intent: string | null;
@@ -93,9 +93,9 @@ const TabletSurvey: React.FC = () => {
                     setTokenData({
                         token: qrToken.token,
                         url: qrToken.url || `${window.location.origin}/survey?token=${qrToken.token}`,
-                        expiresAt: qrToken.expiresAt || qrToken.expires_at
+                        expiresAt: qrToken.expiresAt
                     });
-                    setQrGenerated(true);
+                    // setQrGenerated(true);
                     console.log('🔗 [QR Generated] Mobile Survey Link:', qrToken.url);
                 } else {
                     console.warn('⚠️ [QR Token Missing URL]', qrToken);
@@ -114,7 +114,7 @@ const TabletSurvey: React.FC = () => {
                 setSubmitted(false);
                 setAnswers({ q1_experience: null, q2_experience_intent: null, q3_cleanliness_satisfaction: null });
                 setCurrentStep(1);
-                setQrGenerated(false);
+                // setQrGenerated(false);
                 loadStandaloneToken();
             }, 30000);
         } catch (error) {

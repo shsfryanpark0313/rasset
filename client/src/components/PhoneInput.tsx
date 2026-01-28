@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import Input, { type InputProps } from './Input';
 
-interface PhoneInputProps extends Omit<InputProps, 'onChange'> {
+interface PhoneInputProps extends Omit<InputProps, 'onChange' | 'value'> {
     value: string;
     onChange: (value: string) => void;
 }

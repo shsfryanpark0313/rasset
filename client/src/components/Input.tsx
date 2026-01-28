@@ -1,24 +1,26 @@
-import { twMerge } from 'tailwind-merge';
+import React from 'react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     error?: string;
     helperText?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, error, helperText, className = '', id, ...props }) => {
-    const inputId = id || props.name || Math.random().toString(36).substr(2, 9);
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ label, error, helperText, className = '', id, ...props }, ref) => {
+        const inputId = id || props.name || Math.random().toString(36).substr(2, 9);
 
-    return (
-        <div className="w-full">
-            {label && (
-                <label htmlFor={inputId} className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
-                    {label}
-                </label>
-            )}
-            <input
-                id={inputId}
-                className={`
+        return (
+            <div className="w-full">
+                {label && (
+                    <label htmlFor={inputId} className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+                        {label}
+                    </label>
+                )}
+                <input
+                    ref={ref}
+                    id={inputId}
+                    className={`
                     block w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3
                     text-slate-900 placeholder-slate-400
                     text-sm transition-all duration-200
@@ -27,15 +29,16 @@ const Input: React.FC<InputProps> = ({ label, error, helperText, className = '',
                     ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : ''}
                     ${className}
                 `}
-                {...props}
-            />
-            {error && <p className="mt-1.5 text-sm text-red-600 font-medium ml-1 flex items-center gap-1">
-                <span className="w-1 h-1 rounded-full bg-red-600 inline-block" /> {error}
-            </p>}
-            {!error && helperText && <p className="mt-1.5 text-sm text-slate-500 ml-1">{helperText}</p>}
-        </div>
-    );
-};
+                    {...props}
+                />
+                {error && <p className="mt-1.5 text-sm text-red-600 font-medium ml-1 flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-red-600 inline-block" /> {error}
+                </p>}
+                {!error && helperText && <p className="mt-1.5 text-sm text-slate-500 ml-1">{helperText}</p>}
+            </div>
+        );
+    }
+);
 
 Input.displayName = 'Input';
 

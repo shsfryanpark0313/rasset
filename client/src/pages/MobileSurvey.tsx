@@ -22,7 +22,7 @@ const MobileSurvey: React.FC = () => {
 
     // Tablet response info
     const [hasTabletResponse, setHasTabletResponse] = useState<boolean>(false);
-    const [tabletResponses, setTabletResponses] = useState<any>(null);
+    // const [tabletResponses, setTabletResponses] = useState<any>(null); // Unused
 
     // Personal Info Data
     const [name, setName] = useState('');
@@ -54,7 +54,7 @@ const MobileSurvey: React.FC = () => {
                 // 태블릿 응답 정보 저장
                 if (verifyResult.hasTabletResponse && verifyResult.tabletResponses) {
                     setHasTabletResponse(true);
-                    setTabletResponses(verifyResult.tabletResponses);
+                    // setTabletResponses(verifyResult.tabletResponses);
                 }
                 setStage('survey');
             } catch (error: any) {
