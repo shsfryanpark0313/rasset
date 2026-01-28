@@ -19,13 +19,12 @@ export const qrService = {
         const token = crypto.randomUUID();
 
         // 2. Insert into qr_tokens
-        // Note: removed tablet_feedback_id to avoid schema mismatch error (400)
         const { data, error } = await supabase
             .from('qr_tokens')
             .insert({
                 token: token,
-                expires_at: expiresAt.toISOString()
-                // tablet_feedback_id: tabletFeedbackId || null 
+                expires_at: expiresAt.toISOString(),
+                tablet_feedback_id: _tabletFeedbackId || null
             })
             .select()
             .single();
@@ -49,8 +48,10 @@ export const qrService = {
     verifyToken: async (token: string) => {
         const { data, error } = await supabase
             .from('qr_tokens')
-
-            .select('*')
+            .select(`
+                *,
+                feedback:tablet_feedback_id (*)
+            `)
             .eq('token', token)
             .single();
 
@@ -70,8 +71,8 @@ export const qrService = {
 
         return {
             isValid: true,
-            hasTabletResponse: false,
-            tabletResponses: null
+            hasTabletResponse: !!data.feedback,
+            tabletResponses: data.feedback ? data.feedback.tablet_responses : null
         };
     }
 };
@@ -211,20 +212,21 @@ export const adminService = {
                 stats.todayFeedbacks++;
             }
 
-            // Tablet Responses
-            const tRes = item.tablet_responses;
-            if (tRes) {
+            // --- Helper to process answers (DRY) ---
+            const processAnswers = (res: any) => {
+                if (!res) return;
+
                 // Q1
-                if (tRes.q1_experience) {
-                    stats.q1_experience[tRes.q1_experience] = (stats.q1_experience[tRes.q1_experience] || 0) + 1;
+                if (res.q1_experience) {
+                    stats.q1_experience[res.q1_experience] = (stats.q1_experience[res.q1_experience] || 0) + 1;
                 }
                 // Q2
-                if (tRes.q2_experience_intent) {
-                    stats.q2_intent[tRes.q2_experience_intent] = (stats.q2_intent[tRes.q2_experience_intent] || 0) + 1;
+                if (res.q2_experience_intent) {
+                    stats.q2_intent[res.q2_experience_intent] = (stats.q2_intent[res.q2_experience_intent] || 0) + 1;
                 }
                 // Q3
-                if (tRes.q3_cleanliness_satisfaction) {
-                    const val = tRes.q3_cleanliness_satisfaction;
+                if (res.q3_cleanliness_satisfaction) {
+                    const val = res.q3_cleanliness_satisfaction;
                     let score = 0;
                     if (val === 'much_better') score = 5;
                     else if (val === 'somewhat_better') score = 4;
@@ -239,22 +241,27 @@ export const adminService = {
                         stats.q3_cleanliness.distribution['0'] = (stats.q3_cleanliness.distribution['0'] || 0) + 1;
                     }
                 }
-            }
-
-            // QR Responses
-            const qRes = item.qr_responses;
-            if (qRes) {
-                // Q4 (Reasons) - Array
-                if (Array.isArray(qRes.q4_reason)) {
-                    qRes.q4_reason.forEach((r: string) => {
+                // Q4 (Reasons) - Array (QR only usually, but safe to check)
+                if (Array.isArray(res.q4_reason)) {
+                    res.q4_reason.forEach((r: string) => {
                         stats.q4_reasons[r] = (stats.q4_reasons[r] || 0) + 1;
                         keywordsCount[r] = (keywordsCount[r] || 0) + 1;
                     });
                 }
                 // Q6 (Comparison)
-                if (qRes.q6_comparison) {
-                    stats.q6_comparison[qRes.q6_comparison] = (stats.q6_comparison[qRes.q6_comparison] || 0) + 1;
+                if (res.q6_comparison) {
+                    stats.q6_comparison[res.q6_comparison] = (stats.q6_comparison[res.q6_comparison] || 0) + 1;
                 }
+            };
+
+            // Process Tablet Responses
+            if (item.tablet_responses) {
+                processAnswers(item.tablet_responses);
+            }
+
+            // Process QR Responses (FIX: Also count Q1-Q3 from here if user answered them on mobile)
+            if (item.qr_responses) {
+                processAnswers(item.qr_responses);
             }
         });
 
