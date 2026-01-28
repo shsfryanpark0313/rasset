@@ -71,8 +71,10 @@ export const qrService = {
 
         return {
             isValid: true,
-            hasTabletResponse: false,
-            tabletResponses: null
+            // RLS might block feedback join, but we know if ID exists, it's linked.
+            // Return dummy object if feedback is missing but ID exists to trigger skip logic.
+            hasTabletResponse: !!data.feedback || !!data.tablet_feedback_id,
+            tabletResponses: data.feedback ? data.feedback.tablet_responses : (data.tablet_feedback_id ? { exists: true } : null)
         };
     }
 };
