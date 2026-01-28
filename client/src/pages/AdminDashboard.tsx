@@ -192,11 +192,15 @@ const AdminDashboard: React.FC = () => {
                                         const tRes = item.tablet_responses;
                                         const qRes = item.qr_responses;
 
+                                        // Merge answers: Q1-Q3 might be in tablet OR qr
+                                        const q1Val = tRes?.q1_experience || qRes?.q1_experience;
+                                        const q2Val = tRes?.q2_experience_intent || qRes?.q2_experience_intent;
+                                        const q3Value = tRes?.q3_cleanliness_satisfaction || qRes?.q3_cleanliness_satisfaction;
+
                                         // Q1 Label
-                                        const q1Label = tRes?.q1_experience ? getQ1Label(tRes.q1_experience) : '-';
+                                        const q1Label = q1Val ? getQ1Label(q1Val) : '-';
 
                                         // Q3 Score & Label
-                                        const q3Value = tRes?.q3_cleanliness_satisfaction;
                                         const q3Score = q3Value ? getQ3Score(q3Value) : 0;
                                         const q3Text = q3Value ? `${q3Score}점` : '-';
 
@@ -233,8 +237,8 @@ const AdminDashboard: React.FC = () => {
                                                     {q1Label}
                                                 </td>
                                                 <td className="px-6 py-4 text-slate-700">
-                                                    {tRes?.q2_experience_intent && SURVEY_CONSTANTS.Q2_OPTIONS[tRes.q2_experience_intent as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS]
-                                                        ? SURVEY_CONSTANTS.Q2_OPTIONS[tRes.q2_experience_intent as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS].label
+                                                    {q2Val && SURVEY_CONSTANTS.Q2_OPTIONS[q2Val as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS]
+                                                        ? SURVEY_CONSTANTS.Q2_OPTIONS[q2Val as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS].label
                                                         : '-'}
                                                 </td>
                                                 <td className="px-6 py-4">

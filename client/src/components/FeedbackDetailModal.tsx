@@ -38,44 +38,50 @@ export const FeedbackDetailModal: React.FC<FeedbackDetailModalProps> = ({ feedba
                     {/* Tablet Questions (Common) */}
                     <div>
                         <h3 className="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-4 border-b border-indigo-100 pb-2">
-                            기초 설문 (태블릿)
+                            기초 설문 (Q1 ~ Q3)
                         </h3>
-                        <dl className="grid gap-6">
-                            {tRes ? (
-                                <>
+                        {/* Merge Data Source */}
+                        {(() => {
+                            const q1 = tRes?.q1_experience || qRes?.q1_experience;
+                            const q2 = tRes?.q2_experience_intent || qRes?.q2_experience_intent;
+                            const q3 = tRes?.q3_cleanliness_satisfaction || qRes?.q3_cleanliness_satisfaction;
+                            const hasBasicData = q1 || q2 || q3;
+
+                            if (!hasBasicData) return <p className="text-gray-400 italic">기초 설문 데이터가 없습니다.</p>;
+
+                            return (
+                                <dl className="grid gap-6">
                                     <div>
                                         <dt className="text-sm font-medium text-gray-500 mb-1">Q1. 전반적 만족도</dt>
                                         <dd className="font-semibold text-gray-900">
-                                            {tRes.q1_experience ? SURVEY_CONSTANTS.Q1_OPTIONS[tRes.q1_experience as keyof typeof SURVEY_CONSTANTS.Q1_OPTIONS]?.label || tRes.q1_experience : '-'}
+                                            {q1 ? SURVEY_CONSTANTS.Q1_OPTIONS[q1 as keyof typeof SURVEY_CONSTANTS.Q1_OPTIONS]?.label || q1 : '-'}
                                         </dd>
                                     </div>
                                     <div>
                                         <dt className="text-sm font-medium text-gray-500 mb-1">Q2. 향후 사용 의향</dt>
                                         <dd className="font-semibold text-gray-900">
-                                            {tRes.q2_experience_intent ? SURVEY_CONSTANTS.Q2_OPTIONS[tRes.q2_experience_intent as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS]?.label || tRes.q2_experience_intent : '-'}
+                                            {q2 ? SURVEY_CONSTANTS.Q2_OPTIONS[q2 as keyof typeof SURVEY_CONSTANTS.Q2_OPTIONS]?.label || q2 : '-'}
                                         </dd>
                                     </div>
                                     <div>
                                         <dt className="text-sm font-medium text-gray-500 mb-1">Q3. 청결 만족도</dt>
                                         <dd className="flex items-center gap-2">
-                                            {tRes.q3_cleanliness_satisfaction ? (
+                                            {q3 ? (
                                                 <>
                                                     <span className="font-bold text-2xl text-emerald-600">
-                                                        {getQ3Score(tRes.q3_cleanliness_satisfaction)}
+                                                        {getQ3Score(q3)}
                                                     </span>
                                                     <span className="text-gray-400">/ 5점</span>
                                                     <span className="text-sm text-gray-500 ml-2">
-                                                        ({SURVEY_CONSTANTS.Q3_SCORES[tRes.q3_cleanliness_satisfaction as keyof typeof SURVEY_CONSTANTS.Q3_SCORES]?.label})
+                                                        ({SURVEY_CONSTANTS.Q3_SCORES[q3 as keyof typeof SURVEY_CONSTANTS.Q3_SCORES]?.label})
                                                     </span>
                                                 </>
                                             ) : '-'}
                                         </dd>
                                     </div>
-                                </>
-                            ) : (
-                                <p className="text-gray-400 italic">태블릿 설문 데이터가 없습니다.</p>
-                            )}
-                        </dl>
+                                </dl>
+                            );
+                        })()}
                     </div>
 
                     {/* QR Specific Questions */}
