@@ -49,7 +49,7 @@ export const qrService = {
     verifyToken: async (token: string) => {
         const { data, error } = await supabase
             .from('qr_tokens')
-            .from('qr_tokens')
+
             .select('*')
             .eq('token', token)
             .single();
