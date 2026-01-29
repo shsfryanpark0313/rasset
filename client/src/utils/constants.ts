@@ -15,7 +15,8 @@ export const SURVEY_CONSTANTS = {
         much_better: { label: '① 훨씬 쾌적함', score: 5 },
         somewhat_better: { label: '② 조금 나아짐', score: 4 },
         no_difference: { label: '③ 비슷함', score: 3 },
-        not_sure: { label: '④ 잘 모르겠음', score: 1 }
+        not_sure: { label: '④ 잘 모르겠음', score: 1 },
+        worse: { label: '⑤ 나빠짐', score: 2 }
     },
     Q4_REASONS: {
         can_report_directly: '직접 신고 가능',

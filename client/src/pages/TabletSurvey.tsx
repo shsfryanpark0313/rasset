@@ -221,7 +221,8 @@ const TabletSurvey: React.FC = () => {
                                         { value: 'much_better', label: '① 이전보다 훨씬 쾌적해졌어요' },
                                         { value: 'somewhat_better', label: '② 이전보다 조금 나아진 편이에요' },
                                         { value: 'no_difference', label: '③ 예전과 큰 차이는 없어요' },
-                                        { value: 'not_sure', label: '④ 잘 모르겠어요' }
+                                        { value: 'not_sure', label: '④ 잘 모르겠어요' },
+                                        { value: 'worse', label: '⑤ 나빠졌어요' }
                                     ].map((opt) => (
                                         <button
                                             key={opt.value}

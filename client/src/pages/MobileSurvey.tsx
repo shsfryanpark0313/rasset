@@ -318,7 +318,8 @@ const MobileSurvey: React.FC = () => {
                                                     { value: 'much_better', label: '① 이전보다 훨씬 쾌적해졌어요' },
                                                     { value: 'somewhat_better', label: '② 이전보다 조금 나아진 편이에요' },
                                                     { value: 'no_difference', label: '③ 예전과 큰 차이는 없어요' },
-                                                    { value: 'not_sure', label: '④ 잘 모르겠어요' }
+                                                    { value: 'not_sure', label: '④ 잘 모르겠어요' },
+                                                    { value: 'worse', label: '⑤ 나빠졌어요' }
                                                 ].map((opt) => (
                                                     <label key={opt.value} className={`group flex items-center space-x-3 p-3 rounded-xl border-2 cursor-pointer transition-all active:scale-[0.98] ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600 bg-indigo-50/50' : 'border-slate-100 hover:bg-slate-50'}`}>
                                                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
