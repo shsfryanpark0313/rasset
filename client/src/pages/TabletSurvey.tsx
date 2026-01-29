@@ -278,7 +278,13 @@ const TabletSurvey: React.FC = () => {
                         <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-blue-500 rounded-[2.6rem] blur opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
                         <div className="relative bg-white rounded-[2.2rem] p-4 xl:p-5">
                             {tokenData && tokenData.url ? (
-                                <QRCodeSVG value={tokenData.url} size={300} level="H" className="group-hover:scale-105 transition-transform duration-300" />
+                                <QRCodeSVG
+                                    value={tokenData.url}
+                                    size={undefined}
+                                    style={{ width: '100%', height: 'auto', maxWidth: '300px' }}
+                                    level="H"
+                                    className="group-hover:scale-105 transition-transform duration-300"
+                                />
                             ) : (
                                 <div className="w-[300px] h-[300px] bg-gray-100 rounded-xl flex flex-col items-center justify-center text-gray-400 text-xl xl:text-2xl animate-pulse">
                                     QR 생성 중...
