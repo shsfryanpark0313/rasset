@@ -313,16 +313,16 @@ const MobileSurvey: React.FC = () => {
                                                 최근 1주일 기준, 현재 화장실 청결에 대해 전반적으로 어떻게 느끼셨나요?
                                                 <span className="text-red-500 ml-1">*</span>
                                             </label>
-                                            <div className="space-y-2">
+                                            <div className="grid grid-cols-6 gap-2">
                                                 {[
                                                     { value: 'much_better', label: '① 이전보다 훨씬 쾌적해졌어요' },
                                                     { value: 'somewhat_better', label: '② 이전보다 조금 나아진 편이에요' },
                                                     { value: 'no_difference', label: '③ 예전과 큰 차이는 없어요' },
                                                     { value: 'not_sure', label: '④ 잘 모르겠어요' },
                                                     { value: 'worse', label: '⑤ 나빠졌어요' }
-                                                ].map((opt) => (
-                                                    <label key={opt.value} className={`group flex items-center space-x-3 p-3 rounded-xl border-2 cursor-pointer transition-all active:scale-[0.98] ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600 bg-indigo-50/50' : 'border-slate-100 hover:bg-slate-50'}`}>
-                                                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
+                                                ].map((opt, index) => (
+                                                    <label key={opt.value} className={`group flex items-center space-x-3 p-3 rounded-xl border-2 cursor-pointer transition-all active:scale-[0.98] ${index < 2 ? 'col-span-3' : 'col-span-2'} ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600 bg-indigo-50/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors flex-shrink-0 ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
                                                             {answers.q3_cleanliness_satisfaction === opt.value && <div className="w-2 h-2 rounded-full bg-indigo-600" />}
                                                         </div>
                                                         <span className={`font-medium text-sm ${answers.q3_cleanliness_satisfaction === opt.value ? 'text-indigo-900' : 'text-slate-600'}`}>{opt.label}</span>

@@ -216,19 +216,19 @@ const TabletSurvey: React.FC = () => {
                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold transition-colors ${currentStep === 3 || currentStep === 4 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>3</div>
                                     최근 1주일 기준, 현재 화장실 청결에 대해 전반적으로 어떻게 느끼셨나요?
                                 </h2>
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="grid grid-cols-6 gap-3">
                                     {[
                                         { value: 'much_better', label: '① 이전보다 훨씬 쾌적해졌어요' },
                                         { value: 'somewhat_better', label: '② 이전보다 조금 나아진 편이에요' },
                                         { value: 'no_difference', label: '③ 예전과 큰 차이는 없어요' },
                                         { value: 'not_sure', label: '④ 잘 모르겠어요' },
                                         { value: 'worse', label: '⑤ 나빠졌어요' }
-                                    ].map((opt) => (
+                                    ].map((opt, index) => (
                                         <button
                                             key={opt.value}
                                             disabled={currentStep < 3}
                                             onClick={() => handleQ3(opt.value)}
-                                            className={`py-5 px-5 rounded-2xl border-2 font-bold text-lg transition-all duration-300 text-left ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600 bg-indigo-50 text-indigo-700 shadow-md' : 'border-slate-100 bg-slate-50 hover:bg-white hover:border-slate-300 text-slate-500'}`}
+                                            className={`py-5 px-5 rounded-2xl border-2 font-bold text-lg transition-all duration-300 text-left ${index < 2 ? 'col-span-3' : 'col-span-2'} ${answers.q3_cleanliness_satisfaction === opt.value ? 'border-indigo-600 bg-indigo-50 text-indigo-700 shadow-md' : 'border-slate-100 bg-slate-50 hover:bg-white hover:border-slate-300 text-slate-500'}`}
                                         >
                                             {opt.label}
                                         </button>
